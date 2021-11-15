@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "409307774224",
+    "project_id": "brainworldfirst",
+    "storage_bucket": "brainworldfirst.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409307774224:android:2f33966cac4be9b35f7995",
+        "android_client_info": {
+          "package_name": "com.example.brainworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409307774224-guqnchikd4vlhd9887bq2s69q31hi5sj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPB8JmjcaE4RRIYzAH6ZRgXFGloLVqFdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409307774224-guqnchikd4vlhd9887bq2s69q31hi5sj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
