@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:brainworld/pages/notes/notes.dart';
 import 'package:brainworld/components/drawer.dart';
 import 'package:brainworld/components/my_curve_container.dart';
 import 'package:brainworld/components/my_gradient_button.dart';
@@ -7,6 +8,8 @@ import 'package:brainworld/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:brainworld/constants/my_navigate.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+
+import '../../home_page.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({ Key? key }) : super(key: key);
@@ -23,16 +26,16 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    late Timer timer;
-    timer = Timer.periodic(Duration(milliseconds:1000),(_){
-      setState(() {
-        percent+=10;
-        if(percent >= 60){
-          timer.cancel();
-          // percent=0;
-        }
-      });
-    });
+    // late Timer timer;
+    // timer = Timer.periodic(Duration(milliseconds:1000),(_){
+    //   setState(() {
+    //     percent+=10;
+    //     if(percent >= 60){
+    //       timer.cancel();
+    //       // percent=0;
+    //     }
+    //   });
+    // });
     super.initState();
   }
 
@@ -94,7 +97,7 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                 MySmallContainer(size: size,title: 'Join a lecture',),
                     SizedBox( width: 10,),
-                    MySmallContainer(size: size,title: 'Notes',),
+                    MySmallContainer(size: size,title: 'Notes', onClick: (){MyNavigate.navigatejustpush(Notes(), context);}),
                   ]
             ),
                       ),
@@ -110,25 +113,25 @@ class _DashboardState extends State<Dashboard> {
                           ),
                           ),
                       ),
-                                  Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: LinearPercentIndicator( //leaner progress bar
-                                    animation: true,
-                                    animationDuration: 1000,
-                                    lineHeight: 30.0,
-                                    percent:percent/100,
-                                    center: Text(
-                                      percent.toString() + "%",
-                                      style: TextStyle(
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.black),
-                                    ),
-                                    linearStrokeCap: LinearStrokeCap.roundAll,
-                                    progressColor: welcomepageLightBlue,
-                                    backgroundColor: Colors.grey[300],
-                                  ),
-                        ),
+                        //           Padding(
+                        //   padding: const EdgeInsets.all(18.0),
+                        //   child: LinearPercentIndicator( //leaner progress bar
+                        //             animation: true,
+                        //             animationDuration: 1000,
+                        //             lineHeight: 30.0,
+                        //             percent:percent/100,
+                        //             center: Text(
+                        //               percent.toString() + "%",
+                        //               style: TextStyle(
+                        //                   fontSize: 12.0,
+                        //                   fontWeight: FontWeight.w600,
+                        //                   color: Colors.black),
+                        //             ),
+                        //             linearStrokeCap: LinearStrokeCap.roundAll,
+                        //             progressColor: welcomepageLightBlue,
+                        //             backgroundColor: Colors.grey[300],
+                        //           ),
+                        // ),
                 ],
               ),
             ),
@@ -219,7 +222,9 @@ class _DashboardState extends State<Dashboard> {
                             SafeArea(
                               child: MyOvalGradientButton(
                                 placeHolder: 'More courses', 
-                                pressed: (){}, 
+                                pressed: (){ 
+                                  MyNavigate.navigatejustpush(HomePage(), context);
+                                }, 
                                 firstcolor: welcomepageBlue, secondcolor: welcomepageLightBlue,),
                             )
                           ],
@@ -243,40 +248,47 @@ class _DashboardState extends State<Dashboard> {
 
 class MySmallContainer extends StatelessWidget {
   final String? title;
+  final Function? onClick;
   const MySmallContainer({
     Key? key,
-    required this.size,this.title
+    required this.size,this.title, this.onClick
   }) : super(key: key);
 
   final Size size;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-    height: 100,
-    width: size.width* 0.4,                  
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.25),
-              blurRadius: 30,
-              spreadRadius: 0,
-              offset: Offset(10,20)
-            )
-          ]
-        ),   
-        child: Center(
-    child: Text(
-        title!,
-        style: TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
+    return InkWell(
+          onTap: () { 
+              onClick!(); 
+          },
+      child: Container(
+        
+      height: 100,
+      width: size.width* 0.4,                  
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.25),
+                blurRadius: 30,
+                spreadRadius: 0,
+                offset: Offset(10,20)
+              )
+            ]
+          ),   
+          child: Center(
+      child: Text(
+          title!,
+          style: TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
+        ),
       ),
-    ),
-                  ),   
+                    ),   
+      ),
     );
   }
 }

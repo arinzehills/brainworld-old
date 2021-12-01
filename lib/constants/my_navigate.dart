@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 class MyNavigate  {
   
      static  navigatepushuntil(Widget page,BuildContext context){
-    Navigator.push(context,
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                                page), (Route<dynamic> route) => false);
+    // (context,
   
-                    MaterialPageRoute(builder: (context) => page));
+    //                 MaterialPageRoute(builder: (context) => page));
   }
     static  navigatejustpush(Widget page ,BuildContext context){
     Navigator.push(context,

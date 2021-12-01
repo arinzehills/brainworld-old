@@ -1,18 +1,13 @@
-
-import 'package:brainworld/authentications/user/dashboard.dart';
 import 'package:brainworld/components/gradient_text.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/constants/my_navigate.dart';
-import 'package:brainworld/pages/chat.dart';
 import 'package:brainworld/home_page.dart';
 import 'package:brainworld/pages/home_page_navigation.dart';
-import 'package:brainworld/pages/library.dart';
-import 'package:brainworld/pages/uploads.dart';
 import 'package:flutter/material.dart';
 
 import '../home_page.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   // final String uid;
   // final String name;
   // final String email;
@@ -21,11 +16,20 @@ class MyDrawer extends StatelessWidget {
 
    MyDrawer({Key? key, }) : super(key: key);
 
+  @override
+  _MyDrawerState createState() => _MyDrawerState();
+}
 
+class _MyDrawerState extends State<MyDrawer> {
+  int _selectedIndex=0;
+   _onSelected(int index) {
+    setState(() => _selectedIndex = index);
+  }
   @override
   Widget build(BuildContext context) {
     // final user= Provider.of<Users>(context);
     //  var myred=Color(MyApp().myred);
+        
         
         return Drawer(
           
@@ -120,13 +124,20 @@ class MyDrawer extends StatelessWidget {
                    gradient: LinearGradient(
                        begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                      welcomepageBlue,
-                      welcomepageLightBlue,                    
-                    ]),
+                      colors:_selectedIndex==0 ? [ homepageBlue,homepageLightBlue]
+                          : [Colors.white,Colors.white],
+                      ),
                     ),
                 ),
-                onTap: () => {  MyNavigate.navigatejustpush(HomePage(), context)},
+                onTap: () => {  
+                    setState(() {
+                    _selectedIndex = 0;
+                  }),
+                  print('index $_selectedIndex'),
+                  MyNavigate.navigatejustpush(HomePage(), context)
+                  
+                  },
+                  selected: _selectedIndex==0,
               ),
               ListTile(
                 // leading: Icon(Icons.input,color:Colors.red,),
@@ -138,16 +149,52 @@ class MyDrawer extends StatelessWidget {
                    gradient: LinearGradient(
                        begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                      welcomepageBlue,
-                      welcomepageLightBlue,                    
-                    ]),
+                      colors: _selectedIndex==0? [ homepageBlue,homepageLightBlue]
+                          : [Colors.white,Colors.white],
+                          ),
                     ),
                 ),
-                onTap: () => { MyNavigate.navigatejustpush(HomePageNavagation(), context)},
+                onTap: () => { 
+                    setState(() {
+                    _selectedIndex = 1;
+                  }),
+                  print('index:$_selectedIndex'),
+                  
+                  MyNavigate.navigatejustpush(HomePageNavagation(), context)
+                  
+                  },
+                selected: _selectedIndex==1,
               ),
-             ListTile(
+            
+               ListTile(
+                  // leading: Icon(Icons.input,color:Colors.red,),
+                    title: Center(
+                    child: GradientText('Uploads ',
+                      style: const TextStyle(
+                        fontSize: 30
+                        ),
+                     gradient: LinearGradient(
+                         begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: _selectedIndex==0 ? [ homepageBlue,homepageLightBlue]
+                          : [Colors.white,Colors.white],),
+                      ),
+                  ),
+                   selected: _selectedIndex==2,
+                  onTap: () => { 
+                    print('index:$_selectedIndex'),              
+                  
+                     MyNavigate.navigatepushuntil(HomePageNavagation(index: 1,), context),
+                     setState(() {
+                    _selectedIndex = 2;
+                  }),
+                     },
+                     
+                
+                ),
+               ListTile(
                 // leading: Icon(Icons.input,color:Colors.red,),
+                
                 title: Center(
                   child: GradientText('Chat ',
                     style: const TextStyle(
@@ -156,32 +203,20 @@ class MyDrawer extends StatelessWidget {
                    gradient: LinearGradient(
                        begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                      welcomepageBlue,
-                      welcomepageLightBlue,                    
-                    ]),
+                      colors: _selectedIndex==0 ? [ homepageBlue,homepageLightBlue]
+                          : [Colors.white,Colors.white],
+                          ),
                     ),
                 ),
-                onTap: () => {  MyNavigate.navigatejustpush(Chat(), context)},
+                onTap: () => { 
+                  _onSelected(3),
+                  print(_selectedIndex),
+                   MyNavigate.navigatepushuntil(HomePageNavagation(index: 2,), context)
+                   
+                   },
+                selected: _selectedIndex==3,
               ),
               ListTile(
-                // leading: Icon(Icons.input,color:Colors.red,),
-                title: Center(
-                  child: GradientText('Uploads ',
-                    style: const TextStyle(
-                      fontSize: 30
-                      ),
-                   gradient: LinearGradient(
-                       begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                      welcomepageBlue,
-                      welcomepageLightBlue,                    
-                    ]),
-                    ),
-                ),
-                onTap: () => {  MyNavigate.navigatejustpush(Uploads(), context)},
-              ),ListTile(
                 // leading: Icon(Icons.input,color:Colors.red,),
                 title: Center(
                   child: GradientText('Library ',
@@ -191,13 +226,19 @@ class MyDrawer extends StatelessWidget {
                    gradient: LinearGradient(
                        begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                      welcomepageBlue,
-                      welcomepageLightBlue,                    
-                    ]),
+                      colors: _selectedIndex==0? [ homepageBlue,homepageLightBlue]
+                          : [Colors.white,Colors.white],
+                          ),
                     ),
                 ),
-                onTap: () => {  MyNavigate.navigatejustpush(Library(), context)},
+                onTap: () => {
+                    setState(() {
+                    _selectedIndex = 4;
+                  }),
+                    MyNavigate.navigatepushuntil(HomePageNavagation(index: 3,), context)
+                    
+                    },
+                    selected: _selectedIndex==4,
               ),ListTile(
                 // leading: Icon(Icons.input,color:Colors.red,),
                 title: Center(
@@ -208,20 +249,23 @@ class MyDrawer extends StatelessWidget {
                    gradient: LinearGradient(
                        begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [
-                      welcomepageBlue,
-                      welcomepageLightBlue,                    
-                    ]),
+                      colors: _selectedIndex==0 ? [ homepageBlue,homepageLightBlue]
+                          : [Colors.white,Colors.white],) ,
                     ),
                 ),
-                onTap: () => {  MyNavigate.navigatejustpush(HomePage(), context)},
+                onTap: () => { 
+                    setState(() {
+                    _selectedIndex = 5;
+                  }),
+                   MyNavigate.navigatejustpush(HomePage(), context)
+                   
+                   },
+                   selected: _selectedIndex==5,
               ),
             ]
           ),
         );
+        
        }
-      
-      
-    
-  
+       
 }

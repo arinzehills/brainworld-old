@@ -9,6 +9,7 @@ class MyCurveContainer extends StatelessWidget {
   String? pagetitle;
   Widget? curvecontainerwidget1;
   Widget? curvecontainerwidget2;
+  Widget? title_widget;
   String? searchHint;
   final double height;
  MyCurveContainer({
@@ -16,6 +17,7 @@ class MyCurveContainer extends StatelessWidget {
     required this.size,
     this.pagetitle,
     this.curvecontainerwidget1,
+    this.title_widget,
     this.searchHint,
     required this.height,
     this.curvecontainerwidget2,
@@ -64,7 +66,9 @@ class MyCurveContainer extends StatelessWidget {
                     fontSize: 22,
                   ),
                   textAlign:TextAlign.left ,
-                             ),
+                             ), 
+                             Spacer(),
+                        title_widget ?? SizedBox()
                         ],
                          ),
                        ),

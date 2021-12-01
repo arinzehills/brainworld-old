@@ -9,8 +9,6 @@ final homepageLightBlue= const Color(0xff019bf9);
 final myOrangeGradient= [const Color(0xffdb6c17),const Color(0xffff00b)];
  Size size(context)=> MediaQuery.of(context).size;
 var textFieldDecoration = InputDecoration(
-                              
-                                  
                                    hintStyle: TextStyle(
                                      color:const  Color(0xff626262)),
                                   filled: true,

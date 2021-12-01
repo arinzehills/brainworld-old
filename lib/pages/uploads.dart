@@ -29,13 +29,13 @@ class _UploadsState extends State<Uploads> {
                       
                       floating: true,
                       delegate: CustomSliverDelegate(
-                        expandedHeight: 250,
+                        expandedHeight: 149,
                         aligncontainerwidget: MyListContainer(title: 'Total number of uploads',),
                         widget2: SizedBox(),
                         title: 'Uploads',
                         searchHint: 'uploads',
                         alignment: Alignment(0.0, 0.9),
-                        curveContainerHeight: size.height * 0.43,
+                        curveContainerHeight: size.height * 0.33,
                       ),
                     ),
                   SliverFillRemaining(

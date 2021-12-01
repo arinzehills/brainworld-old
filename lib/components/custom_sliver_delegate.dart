@@ -12,6 +12,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
       bool? showaligncontainerwidget;//the widget that is align/stacked at the top of the curve container
       Widget? widget1;//widget that will be postitoned at the top of the search bar
       Widget? widget2;//widget that will be postitoned at the bottom of the search bar
+      Widget? title_widget;// this widget will be at the right site of the app bar
       String title;
       String? searchHint;
       double? curveContainerHeight;
@@ -20,6 +21,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
         required this.expandedHeight,
         this.hideTitleWhenExpanded = true,
         this.aligncontainerwidget,
+        this.title_widget,
         this.showaligncontainerwidget,
          required this.title, 
         this.searchHint,
@@ -58,7 +60,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                         pagetitle: title,
                         searchHint: searchHint,
                         curvecontainerwidget1: widget1,
-                        
+                        title_widget: title_widget,
                         ),
               ),
              showaligncontainerwidget==true ? Align(
@@ -151,7 +153,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
       double get maxExtent => expandedHeight + expandedHeight / 2;
 
       @override
-      double get minExtent =>expandedHeight<150 ? expandedHeight+50 : expandedHeight-100;
+      double get minExtent =>expandedHeight<150 ? expandedHeight+30 : expandedHeight-100;
 
       @override
       bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

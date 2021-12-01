@@ -9,14 +9,16 @@ import 'chat.dart';
 
 
 class HomePageNavagation extends StatefulWidget {
-  const HomePageNavagation({ Key? key }) : super(key: key);
+      final int? index;
+
+  const HomePageNavagation({ Key? key, this.index }) : super(key: key);
 
   @override
   _HomePageNavagationState createState() => _HomePageNavagationState();
 }
 
 class _HomePageNavagationState extends State<HomePageNavagation> {
-   int _selectedIndex = 0;
+   late int _selectedIndex = widget.index ?? 0;
   
   List<Widget> _widgetOptions = <Widget>[
     Dashboard(),
@@ -25,6 +27,12 @@ class _HomePageNavagationState extends State<HomePageNavagation> {
     Library(),
     Profile()    
   ];
+
+@override
+  void initState() {
+    super.initState();
+    // var index = widget.index;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
