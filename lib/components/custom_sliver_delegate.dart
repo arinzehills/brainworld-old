@@ -16,10 +16,12 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
       String title;
       String? searchHint;
       double? curveContainerHeight;
+      bool? showHorizontalScrollList;
       Alignment alignment;
       CustomSliverDelegate({
         required this.expandedHeight,
         this.hideTitleWhenExpanded = true,
+        this.showHorizontalScrollList,
         this.aligncontainerwidget,
         this.title_widget,
         this.showaligncontainerwidget,
@@ -61,40 +63,16 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                         searchHint: searchHint,
                         curvecontainerwidget1: widget1,
                         title_widget: title_widget,
+                        
                         ),
               ),
-             showaligncontainerwidget==true ? Align(
-               alignment: alignment,
-               child: Opacity(
-                    opacity: percent,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 30 * percent, left: 30,right: 30, bottom: 0),
-                      child: Container(
-                  height: 90,
-                  width: size.width* 0.85,                  
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 30,
-                          spreadRadius: 0,
-                          offset: Offset(5,20)
-                        )
-                      ]
-                    ),  
-                    child:  aligncontainerwidget ?? SizedBox(),
-                        ),
-                    ),
-                  ),
-             ): SizedBox(),
-                 widget2 ?? Align(
-                               alignment: Alignment(0, 0.0),
+              
+                 if(showHorizontalScrollList==true) Align(
+                            alignment: alignment,
                                child: Opacity(
                       opacity: percent,
                       child: Padding(
-                        padding: EdgeInsets.only(top: 30 * percent, left: 30,right: 0, bottom: 0),
+                        padding: EdgeInsets.only(top: 30, left: 30,right: 0, bottom: 0),
                         child:ListView.builder(
                           scrollDirection: Axis.horizontal,
                             itemCount: 4,
@@ -105,8 +83,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                                    return
                                    Padding(
                                 padding: const EdgeInsets.only(top: 125.0,left: 10, right: 10, bottom: 110),
-                                child: 
-                                    Container(
+                                child:Container(
                                             height: 110,
                                             width: size.width* 0.28,                  
                                               decoration: BoxDecoration(
@@ -143,6 +120,32 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                              ),
+             showaligncontainerwidget==true ? Align(
+               alignment: alignment,
+               child: Opacity(
+                    opacity: percent,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 30 * percent, left: 30,right: 30, bottom: 0),
+                      child: Container(
+                  height: 90,
+                  width: size.width* 0.85,                  
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 30,
+                          spreadRadius: 0,
+                          offset: Offset(5,20)
+                        )
+                      ]
+                    ),  
+                    child:  aligncontainerwidget ?? SizedBox(),
+                        ),
+                    ),
+                  ),
+             ): SizedBox(),
                 
                
             ],
@@ -153,7 +156,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
       double get maxExtent => expandedHeight + expandedHeight / 2;
 
       @override
-      double get minExtent =>expandedHeight<150 ? expandedHeight+30 : expandedHeight-100;
+      double get minExtent =>expandedHeight<150 ? expandedHeight-8 : expandedHeight-100;
 
       @override
       bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

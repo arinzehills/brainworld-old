@@ -3,6 +3,10 @@ import 'package:brainworld/components/drawer.dart';
 import 'package:brainworld/components/my_curve_container.dart';
 import 'package:brainworld/components/my_gradient_button.dart';
 import 'package:brainworld/constants/constants.dart';
+import 'package:brainworld/constants/my_navigate.dart';
+import 'package:brainworld/pages/uploads/upload_detail.dart';
+import 'package:brainworld/pages/uploads/upload_files.dart';
+import 'package:brainworld/pages/uploads/upload_list_page.dart';
 import 'package:flutter/material.dart';
 class Uploads extends StatefulWidget {
   const Uploads({ Key? key }) : super(key: key);
@@ -26,12 +30,11 @@ class _UploadsState extends State<Uploads> {
                 slivers: <Widget>[
                   SliverPersistentHeader(
                       pinned: true,
-                      
                       floating: true,
                       delegate: CustomSliverDelegate(
                         expandedHeight: 149,
                         aligncontainerwidget: MyListContainer(title: 'Total number of uploads',),
-                        widget2: SizedBox(),
+                        showaligncontainerwidget:true,
                         title: 'Uploads',
                         searchHint: 'uploads',
                         alignment: Alignment(0.0, 0.9),
@@ -49,23 +52,28 @@ class _UploadsState extends State<Uploads> {
                                    return Padding(
                                 padding: const EdgeInsets.only(top: 10.0,left: 30, right: 30),
                                 child: 
-                            Container(
-                                            height: 90,
-                                            width: size.width* 0.85,                  
-                                              decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 30,
-                                spreadRadius: 0,
-                                offset: Offset(10,30)
-                              )
-                            ]
-                                              ),  
-                                                child: MyListContainer(title: 'Mathematics')
-                                            ),                      
+                            GestureDetector(
+                              onTap: (){
+                                MyNavigate.navigatejustpush(UploadListPage(isUser: true,), context);
+                              },
+                              child: Container(
+                                        height: 90,
+                                        width: size.width* 0.85,                  
+                                         decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.2),
+                                                blurRadius: 30,
+                                                spreadRadius: 0,
+                                                offset: Offset(10,30)
+                                              )
+                                                 ]
+                                                ),  
+                                                  child: MyListContainer(title: 'Mathematics')
+                                              ),
+                            ),                      
                               );
                                  }
                                  ),
@@ -81,13 +89,15 @@ class _UploadsState extends State<Uploads> {
               child: Center(           
               child: MyGradientButton(
                 placeHolder: 'Upload', 
-                pressed: (){}, 
+                pressed: (){
+                    MyNavigate.navigatejustpush(UploadFiles(), context);
+                }, 
                 firstcolor: homepageBlue,
                  secondcolor: homepageLightBlue,
                  child:Padding(
                                              padding: const EdgeInsets.only(left:18.0),
                                              child: ImageIcon(
-                                              AssetImage('assets/edit_user.png'),
+                                              AssetImage('assets/uploads_blue.png'),
                                                 size: 30,
                                                 color: Colors.white,
                                               ),
@@ -102,40 +112,5 @@ class _UploadsState extends State<Uploads> {
       
       );
 
-  }
-}
-class MyListContainer extends StatelessWidget {
-  final String title;
-  final String? sub_title;
-  const MyListContainer({
-    Key? key, required this.title, this.sub_title,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(19.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-                    title,
-                    style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                    ),
-          ),
-          SizedBox(height: 5,),
-          Text(
-                    sub_title ?? '14 uploads',
-                    style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                    ),
-          )
-        ],
-      ),
-    );
   }
 }

@@ -4,6 +4,7 @@ import 'package:brainworld/components/my_curve_container.dart';
 import 'package:brainworld/components/my_gradient_button.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/pages/uploads.dart';
+import 'package:brainworld/pages/uploads/upload_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:brainworld/constants/my_navigate.dart';
 
@@ -39,14 +40,13 @@ class _LibraryState extends State<Library> {
                         alignment: Alignment(0.0, 1.0),
                         searchHint: 'library',
                         curveContainerHeight:size.height* 0.43,
-                        
+                        showHorizontalScrollList: true
                       ),
                     ),
                   
-                  SliverFillRemaining(
+                  SliverToBoxAdapter(
                     child: Center(
                       child: ListView.builder(
-
                                  itemCount: 4,
                                  shrinkWrap: true,
                                  padding: EdgeInsets.only(top: 10,bottom: 10),
@@ -55,23 +55,28 @@ class _LibraryState extends State<Library> {
                                    return Padding(
                                 padding: const EdgeInsets.only(top: 10.0,left: 30, right: 30),
                                 child: 
-                            Container(
-                                            height: 90,
-                                            width: size.width* 0.85,                  
-                                              decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 30,
-                                spreadRadius: 0,
-                                offset: Offset(10,30)
-                              )
-                            ]
-                                              ),  
-                                                child: MyListContainer(title: 'Mathematics')
-                                            ),                      
+                             GestureDetector(
+                              onTap: (){
+                                MyNavigate.navigatejustpush(UploadListPage(isUser:false,), context);
+                              },
+                              child: Container(
+                                              height: 90,
+                                              width: size.width* 0.85,                  
+                                                decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 30,
+                                  spreadRadius: 0,
+                                  offset: Offset(10,30)
+                                )
+                              ]
+                                                ),  
+                                                  child: MyListContainer(title: 'Mathematics')
+                                              ),
+                            ),                      
                               );
                                  }
                                  ),

@@ -9,13 +9,17 @@ class NormalCurveContainer extends StatelessWidget {
   Widget? widget;
   String? imageUrl;
   String? searchHint;
+  double? container_radius;
+  bool? showDrawer;
   final double height;
  NormalCurveContainer({
     Key? key,
     required this.size,
     this.pagetitle,
     this.widget,
+    this.showDrawer,
     this.searchHint,
+    this.container_radius,
     required this.height,
     this.imageUrl,
   }) : super(key: key);
@@ -28,7 +32,7 @@ class NormalCurveContainer extends StatelessWidget {
       height: height,
       padding: EdgeInsets.only(top: 0),
     decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(110)),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(container_radius ?? 110)),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -45,7 +49,7 @@ class NormalCurveContainer extends StatelessWidget {
           child: Row(
              mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              IconButton(
+              if(showDrawer==null) IconButton(
                 onPressed: ()=> {
                  if(imageUrl==null) {
                    Scaffold.of(context).openDrawer()

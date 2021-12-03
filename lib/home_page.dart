@@ -5,6 +5,7 @@ import 'package:brainworld/components/my_curve_container.dart';
 import 'package:brainworld/components/my_gradient_button.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/pages/cart/cart.dart';
+import 'package:brainworld/pages/course/course_detail_page.dart';
 import 'package:brainworld/pages/home_page_navigation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -300,9 +301,10 @@ class HorizontalListView extends StatelessWidget {
                   MyOvalGradientButton(
                           placeHolder: 'See details', 
                           pressed: (){ 
-                            MyNavigate.navigatejustpush(HomePage(), context);
+                            MyNavigate.navigatejustpush(CourseDetailPage(), context);
                           }, 
-                          firstcolor: homepageLightBlue, secondcolor: homepageBlue,),
+                          firstcolor: homepageLightBlue, secondcolor: homepageBlue,
+                          ),
                           MyOvalGradientButton(
                           placeHolder: 'Add to cart', 
                           pressed: (){ 

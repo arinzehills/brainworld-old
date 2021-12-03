@@ -139,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
              Positioned(
                 
             child: Padding(              
-              padding: EdgeInsets.only(top: 230),
+              padding: EdgeInsets.only(top: size.height * 0.36),
               child: Center(
            
               child: Container(

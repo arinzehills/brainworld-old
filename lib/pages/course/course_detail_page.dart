@@ -1,16 +1,16 @@
+import 'package:brainworld/components/basic_tile_page.dart';
 import 'package:brainworld/components/drawer.dart';
-import 'package:brainworld/components/mylist_container.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../home_page_navigation.dart';
 
-class UploadDetail extends StatefulWidget {
-  const UploadDetail({ Key? key }) : super(key: key);
+class CourseDetailPage extends StatefulWidget {
+  const CourseDetailPage({ Key? key }) : super(key: key);
 
   
   @override
-  _UploadDetailState createState() => _UploadDetailState();
+  _CourseDetailPageState createState() => _CourseDetailPageState();
 }
 class UserData{
   String title;
@@ -18,7 +18,7 @@ class UserData{
   UserData({required this.title, this.leading});
 
 }
-class _UploadDetailState extends State<UploadDetail> {
+class _CourseDetailPageState extends State<CourseDetailPage> {
 
     List<UserData> title =[
     UserData(title: 'title',leading: Icons.person),
@@ -67,7 +67,7 @@ class _UploadDetailState extends State<UploadDetail> {
                                     width: double.infinity,
                                     height: size.height* 0.4,
                                     decoration: new BoxDecoration(
-                                    color: Colors.transparent,
+                                    // color: Colors.,
                                       image: new DecorationImage(
                                         image: AssetImage(
                                             "assets/coding.jpg"),
@@ -90,7 +90,7 @@ class _UploadDetailState extends State<UploadDetail> {
                                         ),
                                          Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text(
+                                          child: Text( 
                                             'This Python For Beginners Course Teaches '
                                             'You The Python Language Fast. Includes Python Online Training With Python 3 ',
                                             overflow: TextOverflow.ellipsis,
@@ -106,8 +106,10 @@ class _UploadDetailState extends State<UploadDetail> {
                                           padding: const EdgeInsets.only(left:8.0),
                                           child: Row(
                                             children: [
-                                              Icon(
-                                              Icons.lock_clock,
+                                              RadiantGradientMask(
+                                                child: Icon(
+                                                Icons.lock_clock,
+                                                ),
                                               ),
                                                Text(
                                               'Last updated 11/2021  ',
@@ -122,11 +124,10 @@ class _UploadDetailState extends State<UploadDetail> {
                                             ],
                                           ),
                                         ),
-                                        
                                         Padding(
                                           padding: const EdgeInsets.only(left: 8.0, top: 20),
                                           child: Text(
-                                            'Videos',
+                                            'Course content',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                             style: TextStyle(
@@ -136,14 +137,11 @@ class _UploadDetailState extends State<UploadDetail> {
                                               ),
                                            ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.all(10).copyWith(top:15),
-                                        child: Text('No videos for this contents'),),
-                                        // ?? BasicTilePage(),
-                                        Padding(
+                                        BasicTilePage(),
+                                             Padding(
                                               padding: const EdgeInsets.only(left: 8.0, top: 20),
                                               child: Text(
-                                                'Files',
+                                                'Requirements ',
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 2,
                                                 style: TextStyle(
@@ -153,29 +151,22 @@ class _UploadDetailState extends State<UploadDetail> {
                                                   ),
                                               )
                                          ),
-                               ListView.builder(
-                                 itemCount: 4,
-                                 shrinkWrap: true,
-                                 padding: EdgeInsets.only(top: 10,bottom: 10),
-                                 physics: NeverScrollableScrollPhysics(),                                 
-                                 itemBuilder: (context, index){
-                                   return   Card(
-                                     child: ListTile(
-
-                                              title: Text('title'),
-                                                leading: Icon(
-                                                    Icons.picture_as_pdf,
-                                                    color: Colors.red,                                   
+                                          Padding(
+                                              padding: const EdgeInsets.only(left: 12.0, top: 20),
+                                              child: Text(
+                                                'Requirements This Python For Beginners Course Teaches '
+                                                'You The Python Language Fast. Includes Python Online Training With Python 3 ',
+                                                style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight: FontWeight.w400,
+                                                      fontSize: 15,
                                                   ),
-                                                  trailing: Icon(Icons.more_vert),
-                                            ),
-                                   );
-                                 }
-                                 ),
+                                              )
+                                         ),
                                 ],
                               )
                             ),
-                          )
+                          ),
                   ],
                 ),
                           ),

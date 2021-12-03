@@ -4,17 +4,21 @@ import 'package:brainworld/components/my_gradient_button.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/constants/my_navigate.dart';
 import 'package:brainworld/pages/home_page_navigation.dart';
+import 'package:brainworld/pages/uploads/upload_detail.dart';
+import 'package:brainworld/pages/uploads/upload_files.dart';
 import 'package:flutter/material.dart';
-
-import 'note_detail.dart';
-class Notes extends StatefulWidget {
-  const Notes({ Key? key }) : super(key: key);
+class UploadListPage extends StatefulWidget {
+    final bool isUser;
+    
+    UploadListPage({ 
+      required this.isUser,
+   });
 
   @override
-  _NotesState createState() => _NotesState();
+  _UploadListPageState createState() => _UploadListPageState();
 }
 
-class _NotesState extends State<Notes> {
+class _UploadListPageState extends State<UploadListPage> {
   @override
   Widget build(BuildContext context) {
      Size size= MediaQuery.of(context).size;
@@ -29,14 +33,14 @@ class _NotesState extends State<Notes> {
                 slivers: <Widget>[
                   SliverPersistentHeader(
                       pinned: true,
+                      
                       floating: true,
                       delegate: CustomSliverDelegate(
-                        expandedHeight: 149,
-                        aligncontainerwidget: MyListContainer(title: 'Total number of Notes',sub_title: '10',),
+                        expandedHeight: 149,                        
+                        aligncontainerwidget: MyListContainer(title: 'Total number of UploadListPage',),
                         widget2: SizedBox(),
-                        showaligncontainerwidget: true,
-                        title: 'Notes',
-                        searchHint: 'Notes',
+                        title: 'Mathematics ',
+                        searchHint: 'mathematics uploads',
                         alignment: Alignment(0.0, 0.9),
                         curveContainerHeight: size.height * 0.33,
                       ),
@@ -56,7 +60,7 @@ class _NotesState extends State<Notes> {
                                 child: 
                             GestureDetector(
                               onTap: (){
-                                MyNavigate.navigatejustpush(NoteDetail(), context);
+                                MyNavigate.navigatejustpush(UploadDetail(), context);
                               },
                               child: Container(
                                               height: 90,
@@ -78,22 +82,20 @@ class _NotesState extends State<Notes> {
                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
                                                       MyListContainer(title: 'Mathematics'),
-                                                      Padding(
+                                                         if(widget.isUser==true) Padding(
                                                         padding: const EdgeInsets.only(right: 10.0, top:0),
                                                         child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: [
-                                                            RadiantGradientMask(
-                                                              child: IconButton(
+                                                        IconButton(
                                                                 icon : Icon(Icons.edit),
-                                                                color: welcomepageLightBlue, 
+                                                                color: homepageBlue, 
                                                                 onPressed: () { 
-                                                                  MyNavigate.navigatejustpush(NoteDetail(), context);
+                                                                  MyNavigate.navigatejustpush(UploadFiles(), context);
                                                                  },                                                            
                                                               ),
-                                                            ),
-                                                               Flexible(
-                                                                 child: IconButton(                                                                   
+                                                         Flexible(
+                                                                 child: IconButton(                                                                 
                                                                   icon : Icon(Icons.delete),
                                                                   color: Colors.red, 
                                                                   onPressed: () {  },                                                            
@@ -113,29 +115,6 @@ class _NotesState extends State<Notes> {
                   ),
                 ],
               ),
-               Positioned(
-                
-            child: Padding(              
-              padding: EdgeInsets.only(
-                top:size.height*0.8),
-              child: Center(           
-              child: MyGradientButton(
-                placeHolder: 'Add Note', 
-                pressed: (){ MyNavigate.navigatejustpush(NoteDetail(), context);}, 
-                firstcolor: homepageBlue,
-                 secondcolor: homepageLightBlue,
-                 child:Padding(
-                                             padding: const EdgeInsets.only(left:18.0),
-                                             child: ImageIcon(
-                                              AssetImage('assets/pen-plus.png'),
-                                                size: 30,
-                                                color: Colors.white,
-                                              ),
-                                           ),
-                 )
-          ),
-            )
-             )
               ]
           ),
         ),
@@ -168,7 +147,7 @@ class MyListContainer extends StatelessWidget {
           ),
           SizedBox(height: 5,),
           Text(
-                    sub_title ?? 'Notes...',
+                    sub_title ?? 'UploadListPage...',
                     style: TextStyle(
                           color: Colors.grey,
                           fontSize: 20,
