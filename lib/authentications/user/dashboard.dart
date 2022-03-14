@@ -1,13 +1,16 @@
-import 'dart:async';
+import 'package:brainworld/constants/loading.dart';
+import 'package:brainworld/models/myuser.dart';
 import 'package:brainworld/pages/notes/notes.dart';
 import 'package:brainworld/components/drawer.dart';
 import 'package:brainworld/components/my_curve_container.dart';
-import 'package:brainworld/components/my_gradient_button.dart';
 import 'package:brainworld/components/myoval_gradient_button.dart';
 import 'package:brainworld/constants/constants.dart';
+import 'package:brainworld/services/database.dart';
+import 'package:brainworld/models/user_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:brainworld/constants/my_navigate.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
 import '../../home_page.dart';
 
@@ -44,204 +47,253 @@ class _DashboardState extends State<Dashboard> {
     
     super.dispose();
   }
+ String dropdownValue = 'Mathematics';
+
+  Widget rangeList() {
+     return Container(
+         child: DropdownButton<String>(
+          value: dropdownValue,
+          icon: const Icon(
+            Icons.expand_more,
+            color: Colors.blue,
+            ),
+          iconSize: 24,
+          elevation: 16,
+          isExpanded: true,
+          style: const TextStyle(color: Colors.blueGrey),
+          underline: SizedBox(),
+          onChanged: (String? newValue) {
+            setState(() {
+              dropdownValue = newValue!;
+            });
+          },
+          items: <String>['Mathematics', 'Physics', 'Chemistry',
+                 'Biology']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+    ),
+      
+     );
+   }
   @override
   Widget build(BuildContext context) {
     
   double _height;
   double _width;
      Size size= MediaQuery.of(context).size;
+    final user= Provider.of<MyUser>(context);
+    
 
-    return Scaffold(
-      drawer: MyDrawer(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              
-              Builder(
-              builder:(context)=> Column(
+    return StreamBuilder<UserDetail>(
+      stream: DataBaseService(uid: user.uid).userData,
+      builder: (context, snapshot) {
+        if(snapshot.hasData){
+          UserDetail? userData= snapshot.data;
+          return Scaffold(
+          drawer: MyDrawer(),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Stack(
                 children: [
-                  MyCurveContainer(
-                    size: size,
-                    height: size.height * 0.5,
-                    pagetitle: 'Brain world',
-                    searchHint: 'here...',
-                    curvecontainerwidget1: Padding(
-                      padding: const EdgeInsets.only(left:33.0, top: 5),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  
+                  Builder(
+                  builder:(context)=> Column(
+                    children: [
+                      MyCurveContainer(
+                        size: size,
+                        height: size.height * 0.5,
+                        pagetitle: 'Brain world',
+                        searchHint: 'here...',
+                        curvecontainerwidget1: Padding(
+                          padding: const EdgeInsets.only(left:33.0, top: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome back,',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                userData!.name ,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ),
+                      Padding(
+                            padding: const EdgeInsets.only(top: 190.0,left: 30),
+                            child: Row(
+                            children: [
+                          MySmallContainer(size: size,title: 'Join a lecture',),
+                              SizedBox( width: 10,),
+                              MySmallContainer(size: size,title: 'Notes', onClick: (){MyNavigate.navigatejustpush(Notes(), context);}),
+                            ]
+                           ),
+                          ),
+    
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0, top: 30),
+                            child: Text(
+                              'Progress',
+                              style: TextStyle(
+                                color: Colors.lightBlue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25,
+                              ),
+                              ),
+                          ),
+                            //           Padding(
+                            //   padding: const EdgeInsets.all(18.0),
+                            //   child: LinearPercentIndicator( //leaner progress bar
+                            //             animation: true,
+                            //             animationDuration: 1000,
+                            //             lineHeight: 30.0,
+                            //             percent:percent/100,
+                            //             center: Text(
+                            //               percent.toString() + "%",
+                            //               style: TextStyle(
+                            //                   fontSize: 12.0,
+                            //                   fontWeight: FontWeight.w600,
+                            //                   color: Colors.black),
+                            //             ),
+                            //             linearStrokeCap: LinearStrokeCap.roundAll,
+                            //             progressColor: welcomepageLightBlue,
+                            //             backgroundColor: Colors.grey[300],
+                            //           ),
+                            // ),
+                    ],
+                  ),
+                ),
+                
+                 Positioned(
+                    
+                child: Padding(              
+                  padding: EdgeInsets.only(top: size.height * 0.36),
+                  child: Center(
+               
+                  child: Container(
+                    height: 250,
+                    width: size.width* 0.85,                  
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 30,
+                            spreadRadius: 0,
+                            offset: Offset(10,30)
+                          )
+                        ]
+                      ),  
+                      child:  Wrap(
                         children: [
-                          Text(
-                            'Welcome back,',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left:18.0, right:18, bottom: 1, top: 14),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text(
+                          //           'mathematics'
+                          //         ),
+                          //          IconButton(
+                          //             icon: Icon(Icons.expand_more),
+                          //             color: Colors.blue,
+                          //             onPressed: (){}
+                          //           ),
+                                    
+                          //     ],
+                          //   ),
+                          // ),
+                          Padding(
+                            padding: const EdgeInsets.only(left:18.0, right:18, bottom: 1, top: 10),
+                            child: rangeList(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top:1.0,left:18,right: 18),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                      'Number of modules',
+                                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                                    ),
+                                ),
+                                      Text(
+                                    'Completed',
+                                    style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
+                                  ),
+                              ],
                             ),
                           ),
-                          Text(
-                            'Arinzechukwu',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                           Padding(
+                            padding: const EdgeInsets.only(left:18.0, right: 18, top: 1),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    '21',
+                                    style: TextStyle(fontSize: 60, 
+                                    color: Colors.grey[600]),
+                                  ),
+                                      Text(
+                                    '7',
+                                    style: TextStyle(fontSize: 60, 
+                                    color: Colors.grey[600]),
+                                  ),
+                              ],
+                            ),
+                          ),
+                           Padding(
+                            padding: const EdgeInsets.only(left:18.0, top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SafeArea(
+                                  child: MyOvalGradientButton(
+                                    placeHolder: 'More courses', 
+                                    pressed: (){ 
+                                      MyNavigate.navigatejustpush(HomePage(), context);
+                                    }, 
+                                    firstcolor: welcomepageBlue, secondcolor: welcomepageLightBlue,),
+                                )
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                    ),
-                  Padding(
-                        padding: const EdgeInsets.only(top: 150.0,left: 30),
-                        child: Row(
-                  children: [
-                MySmallContainer(size: size,title: 'Join a lecture',),
-                    SizedBox( width: 10,),
-                    MySmallContainer(size: size,title: 'Notes', onClick: (){MyNavigate.navigatejustpush(Notes(), context);}),
-                  ]
-            ),
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0, top: 30),
-                        child: Text(
-                          'Progress',
-                          style: TextStyle(
-                            color: Colors.lightBlue,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                          ),
-                          ),
-                      ),
-                        //           Padding(
-                        //   padding: const EdgeInsets.all(18.0),
-                        //   child: LinearPercentIndicator( //leaner progress bar
-                        //             animation: true,
-                        //             animationDuration: 1000,
-                        //             lineHeight: 30.0,
-                        //             percent:percent/100,
-                        //             center: Text(
-                        //               percent.toString() + "%",
-                        //               style: TextStyle(
-                        //                   fontSize: 12.0,
-                        //                   fontWeight: FontWeight.w600,
-                        //                   color: Colors.black),
-                        //             ),
-                        //             linearStrokeCap: LinearStrokeCap.roundAll,
-                        //             progressColor: welcomepageLightBlue,
-                        //             backgroundColor: Colors.grey[300],
-                        //           ),
-                        // ),
-                ],
               ),
-            ),
-            
-             Positioned(
-                
-            child: Padding(              
-              padding: EdgeInsets.only(top: size.height * 0.36),
-              child: Center(
-           
-              child: Container(
-                height: 250,
-                width: size.width* 0.85,                  
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(40)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 30,
-                        spreadRadius: 0,
-                        offset: Offset(10,30)
-                      )
-                    ]
-                  ),  
-                  child:  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left:18.0, right:18, bottom: 1, top: 14),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                                'mathematics'
-                              ),
-                               IconButton(
-                                  icon: Icon(Icons.expand_more),
-                                  color: Colors.blue,
-                                  onPressed: (){}
-                                ),
-                                
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top:1.0,left:18,right: 18),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 150,
-                              child: Text(
-                                  'Number of modules',
-                                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                                ),
-                            ),
-                                  Text(
-                                'Completed',
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                              ),
-                          ],
-                        ),
-                      ),
-                       Padding(
-                        padding: const EdgeInsets.only(left:18.0, right: 18, top: 1),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                                '21',
-                                style: TextStyle(fontSize: 60, 
-                                color: Colors.grey[600]),
-                              ),
-                                  Text(
-                                '7',
-                                style: TextStyle(fontSize: 60, 
-                                color: Colors.grey[600]),
-                              ),
-                          ],
-                        ),
-                      ),
-                       Padding(
-                        padding: const EdgeInsets.only(left:18.0, top: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SafeArea(
-                              child: MyOvalGradientButton(
-                                placeHolder: 'More courses', 
-                                pressed: (){ 
-                                  MyNavigate.navigatejustpush(HomePage(), context);
-                                }, 
-                                firstcolor: welcomepageBlue, secondcolor: welcomepageLightBlue,),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
+                )
                   ),
-                ),
-          ),
-            )
+                
+                ]
               ),
-            
-            ]
+            ),
           ),
-        ),
-      ),
-      );
+          );
+        }else{
+          return Loading();
+        }
+        
+      }
+    );
   }
 }
 

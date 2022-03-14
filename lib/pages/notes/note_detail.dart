@@ -1,12 +1,22 @@
 import 'package:brainworld/components/gradient_text.dart';
 import 'package:brainworld/constants/constants.dart';
-import 'package:brainworld/home_page.dart';
-import 'package:brainworld/pages/notes/notes.dart';
+import 'package:brainworld/constants/my_navigate.dart';
+import 'package:brainworld/models/myuser.dart';
+import 'package:brainworld/models/notes_model.dart';
+import 'package:brainworld/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 import '../home_page_navigation.dart';
 class NoteDetail extends StatefulWidget {
-  const NoteDetail({ Key? key }) : super(key: key);
+   final String? docid;
+   final int note_count;
+   final String? title;
+   final String? decription;
+  const NoteDetail({ Key? key, this.docid, required this.note_count,  this.title, this.decription }) : super(key: key);
+  
 
   @override
   _NoteDetailState createState() => _NoteDetailState();
@@ -14,7 +24,7 @@ class NoteDetail extends StatefulWidget {
 
 class _NoteDetailState extends State<NoteDetail> {
   
-  void _showModalBottomSheet(context){
+  void _showModalBottomSheet(context,uid, docid){
 
       showModalBottomSheet(context: context, 
       shape: RoundedRectangleBorder(
@@ -56,75 +66,82 @@ class _NoteDetailState extends State<NoteDetail> {
                     ),
                 ],
               ),
-             GestureDetector(
-               onTap: (){
-                     int count = 0;
-Navigator.of(context).popUntil((_) => count++ >= 2);
-               },
-               child: Row(
-                 children: [
-                   IconButton(
-                      icon: RadiantGradientMask(
-                        child: Icon(
-                              Icons.cancel ,
-                              color:homepageLightBlue,
-                              size: 19.83,
-                              ),
-                      ),
-                      tooltip: 'cancel',
-                      onPressed: () {
+             Padding(
+               padding: const EdgeInsets.only(bottom: 12.0),
+               child: GestureDetector(
+                 onTap: (){
+                       int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
+                 },
+                 child: Row(
+                   children: [
+                     IconButton(
+                        icon: RadiantGradientMask(
+                          child: Icon(
+                                Icons.cancel ,
+                                color:homepageLightBlue,
+                                size: 19.83,
+                                ),
+                        ),
+                        tooltip: 'cancel',
+                        onPressed: () {
 
-                     },
-                 ),
-                  Padding(
-                        padding: const EdgeInsets.only(left:13.0),
-                        child: Text(
-                            'Cancel changes',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14
+                       },
+                   ),
+                    Padding(
+                          padding: const EdgeInsets.only(left:13.0),
+                          child: Text(
+                              'Cancel changes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14
+                              ),
                             ),
-                          ),
-                      ),
-                 ],
+                        ),
+                   ],
+                 ),
                ),
              ),
-              Row(
-               children: [
-                 GestureDetector(
-                   child: IconButton(
-                      icon: Icon(
-                            Icons.delete ,
-                            color:Colors.red ,
-                            size: 19.83,
-                            ),
-                      tooltip: 'edit',
-                      onPressed: () {
-                     },
+                 if(widget.docid!=null) Padding(
+                   padding: const EdgeInsets.only(bottom: 28.0),
+                    child: GestureDetector(
+                        onTap: (){
+                        print('deleted');
+                        Navigator.pop(context);
+                        popUp(uid, docid);
+                        },
+                        child: Padding(
+                    padding: const EdgeInsets.all(8.0).copyWith(left: 12),
+                    child: Row(
+                     children: [
+                    Icon(
+                                  Icons.delete ,
+                                  color:Colors.red ,
+                                  size: 19.83,
+                                  ),
+                      Padding(
+                            padding: const EdgeInsets.only(left:13.0),
+                            child: Text(
+                                'Delete Note',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                  color: Colors.red
                                 ),
-                    onTap: (){
-
-                    },
-                 ),
-                Padding(
-                      padding: const EdgeInsets.only(left:13.0),
-                      child: Text(
-                          'Delete Note',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: Colors.red
+                              ),
                           ),
-                        ),
-                    ),
-               ],
-             ),
+                     ],
+                             ),
+                ),
+              ),
+                  ),
             ]
           );
       });
   }
-Future popUp(){
+Future popUp(uid,docid){
     
+    int count=0;
     return showDialog(
       context: context,
       builder:(context)=>AlertDialog(
@@ -204,8 +221,15 @@ Future popUp(){
                                           color: Colors.red,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(23)),
-                                          onPressed:()=>{
-                                            // status==true ? _emailSuccess(context) : _emailFailure(context)
+                                          onPressed:()=> {   
+                                            FirebaseFirestore.instance
+                                                      .collection('notes')
+                                                      .doc(uid)
+                                                      .collection('user_notes')
+                                                      .doc(docid)
+                                                      .delete(),
+                                                    Navigator.of(context).popUntil((_) => count++ >= 2),
+                                          
                                           },
                                         ),
                     ),
@@ -218,138 +242,177 @@ Future popUp(){
       ),
     );
   }
-
+  String title='';
+    String description='';
+  final _formKey = GlobalKey<FormState>();
+  late int note_count= widget.note_count==0 ? 0 : 1;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-       appBar: AppBar(
-         leading:   IconButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(Icons.arrow_back,color:homepageLightBlue,),
+    final user= Provider.of<MyUser>(context);
+    print('notecount is $note_count');
+    return StreamBuilder<DocumentSnapshot>(
+      stream: widget.docid==null ? null : FirebaseFirestore.instance
+                    .collection('notes')
+                    .doc(user.uid)
+                    .collection('user_notes')
+                    .doc(widget.docid)
+                    .snapshots(),
+      builder: (context, snapshot) {
+        
+        dynamic notesData=snapshot.data;
+        return Scaffold(
+           appBar: AppBar(
+             leading:   IconButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Icons.arrow_back,color:homepageLightBlue,),
+                    ),
+            elevation: 0,
+            title: Text('Note Title'),
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.white,
+            flexibleSpace: SafeArea(
+              child: Container(
+                padding: EdgeInsets.only(right: 16),
+                child: Row(
+                  children: <Widget>[
+                  
+                    SizedBox(width: 2,),  // Icon(Icons.settings,color: Colors.black54,),
+                  ],
                 ),
-        elevation: 0,
-        title: Text('Note Title'),
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        flexibleSpace: SafeArea(
-          child: Container(
-            padding: EdgeInsets.only(right: 16),
-            child: Row(
-              children: <Widget>[
-              
-                SizedBox(width: 2,),  // Icon(Icons.settings,color: Colors.black54,),
-              ],
+              ),
+          
             ),
-          ),
-      
-        ),
-        actions: [
-              IconButton(
-            icon: Icon(
-               Icons.save,
-              color:homepageLightBlue,
-              ),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-               IconButton(
-            icon: Icon(
-               Icons.share,
-              color:homepageLightBlue,
-              ),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-                 IconButton(
-            icon: Icon(
-               Icons.more_vert,
-              color:homepageLightBlue ,
-              ),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-                            _showModalBottomSheet(context);
-
-            },
-          ),
+            actions: [
+                  IconButton(
+                icon: Icon(
+                   Icons.save,
+                  color:homepageLightBlue,
+                  ),
+                tooltip: 'Show Snackbar',
+                onPressed: () {
+                  print('description' +description +' count $note_count' );
+                  setState(() {
+                    note_count=1;
+                  });
               
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Form(
-                  child: Column(                    
-                      mainAxisAlignment: MainAxisAlignment.center,
-                             children: <Widget>[
-                                 ClipRRect(
-                                      borderRadius: BorderRadius.all(Radius.circular(50)),                                        
-                                      child: Image.asset(
-                                        "assets/logo.png",
-                                        height: 90,
-                                        )
-                                                    ),
-                                 Padding(
-                                   padding: const EdgeInsets.all(18.0),
-                                   child: Container(
-                                         width: MediaQuery.of(context).size.width * 0.87,
-                                         height:  46,
-                                           child: TextFormField(
-                                          // validator: (val)=> val!.length < 6 ? 'Enter a valid password' : null,
-                                          
-                                       decoration:InputDecoration(
-                                                              fillColor: Colors.white,
-                                                              hintText: 'Title',
-                                                              hintStyle: TextStyle(
-                                                                          fontSize: 14,
-                                                                          ),
-                                                              border:OutlineInputBorder(
-                                                                  borderSide: BorderSide(color: welcomepageLightBlue
-                                                                  , width: 0.1),                                                                  
-                                                                  borderRadius: BorderRadius.circular(10.0),                                                                
-                                                              ), 
-                                                                 
-                                                            ),
-                                            onChanged: (val){
-                                                // setState(() =>password=val);
-                                            },
+                  try{
+                      
+                      DataBaseService(uid: user.uid).addUserNote(title, description,widget.docid);
+                      ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: homepageBlue,
+                                            content: Text( widget.docid==null ? 'Notes added Successfully'
+                                            : 'Notes Updated Successfully')
+                                              ));
+                      
+                        
+                       
+                  }catch(e){
+                    print(e);
+                  }
+                },
+              ),
+                   IconButton(
+                icon: Icon(
+                   Icons.share,
+                  color:homepageLightBlue,
+                  ),
+                tooltip: 'Show Snackbar',
+                onPressed: () {
+                  String title=widget.title!;
+                  String decription=widget.decription!;
+                  Share.share(title + decription);
+                },
+              ),
+                     IconButton(
+                icon: Icon(
+                   Icons.more_vert,
+                  color:homepageLightBlue ,
+                  ),
+                tooltip: 'Show Snackbar',
+                onPressed: () {
+                                _showModalBottomSheet(context, user.uid,widget.docid);
+    
+                },
+              ),
+                  
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+                      child: Column(                    
+                          mainAxisAlignment: MainAxisAlignment.center,
+                                 children: <Widget>[
+                                     ClipRRect(
+                                          borderRadius: BorderRadius.all(Radius.circular(50)),                                        
+                                          child: Image.asset(
+                                            "assets/logo.png",
+                                            height: 90,
+                                            )
+                                                        ),
+                                     Padding(
+                                       padding: const EdgeInsets.all(18.0),
+                                       child: Container(
+                                             width: MediaQuery.of(context).size.width * 0.87,
+                                             height:  46,
+                                               child: TextFormField(
+                                              // validator: (val)=> val!.length < 6 ? 'Enter a valid password' : null,
+                                              initialValue: widget.docid==null ? null : widget.title,
+                                             decoration:InputDecoration(
+                                                            fillColor: Colors.white,
+                                                            hintText:  'Title',                                                                
+                                                            hintStyle: TextStyle(
+                                                                        fontSize: 14,
+                                                                        ),
+                                                            border:OutlineInputBorder(
+                                                                borderSide: BorderSide(color: welcomepageLightBlue
+                                                                , width: 0.1),                                                                  
+                                                                borderRadius: BorderRadius.circular(10.0),                                                                
+                                                            ), 
+                                                                
+                                                                ),
+                                                onChanged: (val){
+                                                    setState(() =>title=val);
+                                                },
+                                                 ),
                                              ),
-                                         ),
-                                 ),   
-                                         
-                                       Padding(
-                                         padding: const EdgeInsets.all(8.0),
-                                         child: Container(
-                                         width: MediaQuery.of(context).size.width * 0.87,
-                                  
-                                           child: TextFormField(
-                                                // validator: (val)=> val!.length < 6 ? 'Enter Description *' : null,
-                                                keyboardType: TextInputType.multiline,                                              
-                                                maxLines: 20,                                                                                            
-                                                decoration:InputDecoration(
-                                                              fillColor: Colors.white,
-                                                              hintText: 'Note something down',
-                                                              hintStyle: TextStyle(
-                                                                          fontSize: 14,
-                                                                          ),
-                                                              border:OutlineInputBorder(
-                                                                  borderSide: BorderSide(color: Colors.grey),
-                                                                  
-                                                                  borderRadius: BorderRadius.circular(23.0),
-                                                              ), 
-                                                                 
-                                                            ),
-                                            onChanged: (val){
-                                                // setState(() =>password=val);
-                                            },
-                              ),
-                                         ),
-                                       ),])))
+                                     ),   
+                                             
+                                           Padding(
+                                             padding: const EdgeInsets.all(8.0),
+                                             child: Container(
+                                             width: MediaQuery.of(context).size.width * 0.87,
+                                      
+                                               child: TextFormField(
+                                                    // validator: (val)=> val!.length < 6 ? 'Enter Description *' : null,
+                                                    keyboardType: TextInputType.multiline, 
+                                                   initialValue: widget.docid==null ? null : widget.decription,
+                                                    maxLines: 20,                                                                                            
+                                                    decoration:InputDecoration(
+                                                                  fillColor: Colors.white,
+                                                                  hintText: 'Note something down',
+                                                                  hintStyle: TextStyle(
+                                                                              fontSize: 14,
+                                                                              ),
+                                                                  border:OutlineInputBorder(
+                                                                      borderSide: BorderSide(color: Colors.grey),
+                                                                      
+                                                                      borderRadius: BorderRadius.circular(23.0),
+                                                                  ), 
+                                                                     
+                                                                ),
+                                                onChanged: (val){
+                                                    setState(() =>description=val);
+                                                },
+                                  ),
+                                             ),
+                                           ),])))
+        );
+      }
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:brainworld/models/myuser.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const  appId="0282cdbc-0b53-4f12-b9c9-4762e3ebedc2";
 final iconsColor=const Color(0xffffffff);
@@ -22,3 +24,23 @@ var textFieldDecoration = InputDecoration(
                                   borderRadius: BorderRadius.circular(10.0),
                                     ), 
 );
+var secondtextFieldDecoration = InputDecoration(
+                                   hintStyle: TextStyle(
+                                     color:const  Color(0xff626262)),
+                                  filled: true,
+                                  fillColor:const  Color(0xfff7f7f7),
+                                  focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                 ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                     
+);
+     
+currentuser(context){
+      final user= Provider.of<MyUser>(context);
+      return user;
+}

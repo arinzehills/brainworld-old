@@ -7,12 +7,14 @@ class MyOvalGradientButton extends StatelessWidget {
   final VoidCallback pressed;
   final  firstcolor;
   final  secondcolor;
+  double? height;
   Widget? child;
   MyOvalGradientButton({
     required this.placeHolder,
      required this.pressed,
     required this.firstcolor,
     required this.secondcolor,
+    this.height,
     this.child,
   });
   
@@ -38,7 +40,7 @@ class MyOvalGradientButton extends StatelessWidget {
                                     borderRadius: BorderRadius.all(Radius.circular(30)),
                                   ),
                                    child: Container(
-                                      constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0), // min sizes for Material buttons
+                                      constraints: const BoxConstraints(minWidth: 88.0, minHeight: 16.0), // min sizes for Material buttons
                                       alignment: Alignment.center,
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,

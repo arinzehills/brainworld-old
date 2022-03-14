@@ -7,7 +7,10 @@ import 'package:brainworld/components/my_button.dart';
 import 'package:brainworld/components/my_gradient_button.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/constants/my_navigate.dart';
+import 'package:brainworld/services/auth.dart';
 import 'package:flutter/material.dart';
+
+import '../home_page.dart';
 
 
 class GetStartedPage extends StatefulWidget {
@@ -19,6 +22,8 @@ class GetStartedPage extends StatefulWidget {
 }
 
 class _GetStartedPageState extends State<GetStartedPage> {
+
+    final AuthService _auth=AuthService();
 
   @override
   Widget build(BuildContext context){
@@ -98,8 +103,15 @@ class _GetStartedPageState extends State<GetStartedPage> {
                 children: [
                   MyButton(
                   placeHolder: 'Continue as guest',
-                  pressed: (){
-                    MyNavigate.navigatejustpush(Dashboard(), context);
+                  pressed: () async{
+                  //  dynamic result= await _auth.signInAnon();
+                  //  if(result==null){
+                  //    print('error');
+                  //  }else{
+                  //    print(result);
+                     MyNavigate.navigatejustpush(HomePage(), context);
+                  //  }
+                  
                   },
                 ),
                 MyGradientButton(

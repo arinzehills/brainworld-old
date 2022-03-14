@@ -1,8 +1,5 @@
-import 'package:brainworld/components/my_text_field.dart';
 import 'package:brainworld/constants/constants.dart';
-// import 'package:brainworld/pages/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:brainworld/components/drawer.dart';
 
 
 class MyCurveContainer extends StatelessWidget {
@@ -11,6 +8,7 @@ class MyCurveContainer extends StatelessWidget {
   Widget? curvecontainerwidget2;
   Widget? title_widget;
   String? searchHint;
+  bool? showSearchButton;
   final double height;
  MyCurveContainer({
     Key? key,
@@ -21,6 +19,7 @@ class MyCurveContainer extends StatelessWidget {
     this.searchHint,
     required this.height,
     this.curvecontainerwidget2,
+    this.showSearchButton,
     
   }) : super(key: key);
 
@@ -68,7 +67,8 @@ class MyCurveContainer extends StatelessWidget {
                   textAlign:TextAlign.left ,
                              ), 
                              Spacer(),
-                        title_widget ?? SizedBox()
+                        title_widget ?? SizedBox(),
+                  //      
                         ],
                          ),
                        ),
@@ -77,7 +77,8 @@ class MyCurveContainer extends StatelessWidget {
                        ),
                        
                              curvecontainerwidget1 ?? SizedBox(),
-                          Container(
+                      //  showSearchButton==true  ? 
+                       Container(
                              width: 30,
                              padding: const EdgeInsets.only(left: 30, right: 30, top:10, bottom: 30),
                              child: TextFormField(
@@ -98,7 +99,7 @@ class MyCurveContainer extends StatelessWidget {
                         ),
                
                   )
-                  ),
+                  ) ,
                              curvecontainerwidget2 ?? SizedBox(),
                      ]
                  ),

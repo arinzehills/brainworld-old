@@ -1,6 +1,7 @@
 import 'package:brainworld/components/gradient_text.dart';
 import 'package:brainworld/components/myoval_gradient_button.dart';
 import 'package:brainworld/constants/my_navigate.dart';
+import 'package:brainworld/pages/checkout/checkout.dart';
 
 import '../../home_page.dart';
 import 'package:brainworld/constants/constants.dart';
@@ -159,7 +160,8 @@ class MyCartWidget extends StatelessWidget {
           ),
           ]
         ),
-        if(imgUrl.isNotEmpty) Positioned(
+        if(imgUrl.isNotEmpty) Align(
+          alignment: Alignment.topCenter,
           child:  Container(
             color: Colors.white,
             child: Row(
@@ -247,7 +249,7 @@ class MyCartWidget extends StatelessWidget {
                                   child: MyOvalGradientButton(
                           placeHolder: 'Checkout', 
                           pressed: (){ 
-                            MyNavigate.navigatejustpush(HomePage(), context);
+                            MyNavigate.navigatejustpush(Checkout(), context);
                           }, 
                           firstcolor: homepageLightBlue, secondcolor: homepageBlue,),
                                 ),

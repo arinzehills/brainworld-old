@@ -5,9 +5,14 @@ class MyTextField extends StatefulWidget {
   String hintText;
   String? value;
   bool? obscureText;
+  bool? autovalidate;
+  TextInputType? keyboardType;
+  Function()? onTap;
+  Function(String)? onChanged;
   // final VoidCallback pressed;
   IconButton? suffixIconButton;
   Icon? prefixIcon;
+  String? Function(String?)? validator;
 
   // IconButton(
   //                                             icon: const Icon(Icons.visibility),
@@ -32,6 +37,11 @@ class MyTextField extends StatefulWidget {
     this.suffixIconButton,
     this.value,
     this.obscureText,
+    this.validator,
+    this.autovalidate,
+    this.onTap,
+    this.onChanged,
+    this.keyboardType,
   });
 
   @override
@@ -44,7 +54,10 @@ class _MyTextFieldState extends State<MyTextField> {
   @override
   Widget build(BuildContext context) {
     return   TextFormField(
-                                // validator: (val)=> val.length < 6 ? 'Enter a valid password' : null,
+                                      validator: widget.validator,
+                                      autovalidate: widget.autovalidate!,
+                                        keyboardType: widget.keyboardType,                           
+                                      onTap: widget.onTap,                                      
                                         obscureText: widget.obscureText ?? false,
                                       decoration:textFieldDecoration.copyWith(
                                           prefixIcon: widget.prefixIcon,
@@ -53,9 +66,7 @@ class _MyTextFieldState extends State<MyTextField> {
                                         // suffixIcon: ,
                                           hintText:widget.hintText,
                                       ) ,
-                                        onChanged: (val){
-                                            setState(() =>widget.value=val);
-                                        },
+                                        onChanged:widget.onChanged,
                               ) ;
   }
 }

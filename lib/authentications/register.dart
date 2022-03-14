@@ -8,7 +8,9 @@ import 'package:brainworld/components/my_text_field.dart';
 import 'package:brainworld/components/no_account.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/constants/my_navigate.dart';
+import 'package:brainworld/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 
 class Register extends StatefulWidget {
   Register({Key? key, }) : super(key: key);
@@ -19,7 +21,21 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+   final AuthService _auth= AuthService();
+
+  final _formKey = GlobalKey<FormState>();
     bool obscureText=false;
+    String name='';
+  String email='';
+  String phone='';
+
+    bool loading=false;
+
+  String password='';
+
+  String confirmPassword='';
+  bool autovalidate=false;
+  String error='';
   @override
   Widget build(BuildContext context){
     Size size= MediaQuery.of(context).size;
@@ -76,96 +92,202 @@ class _RegisterState extends State<Register> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 10.0, top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                        'Full name',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                          'Full name',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                        
-                              SizedBox(
-                                  height:10,
+                          
+                                SizedBox(
+                                    height:10,
+                                ),
+                        MyTextField(hintText: 'Enter your full name',
+                           keyboardType: TextInputType.name,
+                              autovalidate: false,
+                              validator: (val)=> val!.isEmpty ? 'Please Enter a Name' : null,
+                              onChanged:  (val){
+                                            if(mounted) {setState(() =>name=val);}
+                                        },
                               ),
-                      MyTextField(hintText: 'Enter your full name',),
-                              SizedBox(
-                                  height:20,
-                              ),
-                       Text(
-                        'Email',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                                SizedBox(
+                                    height:20,
+                                ),
+                         Text(
+                          'Email',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                              SizedBox(
-                                  height:10,
-                              ),
-                       MyTextField(
-                         hintText: 'Enter your email',
+                                SizedBox(
+                                    height:10,
+                                ),
+                         MyTextField(
+                           keyboardType: TextInputType.emailAddress,
+                           validator: MultiValidator(
+                                          [
+                                            RequiredValidator(errorText: 'Required'),
+                                            EmailValidator(errorText: "Enter a Valid Email")
+                                          ]
+                                        ),
+                            autovalidate: autovalidate,
+                             onChanged:  (val){
+                                            if(mounted) {setState(() =>email=val);}
+                                        },
+                                onTap: (){
+                                        if(autovalidate==true){
+                                                    setState(() {
+                                                      autovalidate=false;
+                                                    });
+                                                  }
+                                                  else{
+                                                    setState(() {
+                                                       autovalidate=true;   
+                                                    });
+                                                  }
+                           },
+                           hintText: 'Enter your email',
+                           value: email,
+                           ),
                          
-                         ),
-                       
-                              SizedBox(
-                                  height:20,
-                              ),
-                       Text(
-                        'Password',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                                SizedBox(
+                                    height:20,
+                                ),
+                         Text(
+                          'Password',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                       MyTextField(
-                         hintText: 'Enter password',
-                         obscureText:obscureText,
-                         suffixIconButton: IconButton(
-                                              icon: const Icon(Icons.visibility),
-                                              color:welcomepageBlue,
-                                              onPressed: () {
-                                               if(obscureText==true){
-                                                  setState(() {
-                                                    obscureText=false;
+                         MyTextField(
+                           hintText: 'Enter password',
+                           keyboardType: TextInputType.visiblePassword,
+                           validator:MultiValidator(
+                                      [
+                                        RequiredValidator(errorText: 'Required'),
+                                          MinLengthValidator(6, errorText: 'Password must be at least 6 character long'),
+                                      ]
+                                    ),
+                              autovalidate: autovalidate,
+                               onChanged:  (val){
+                                           if(mounted) {setState(() =>password=val);
+                                           }
+                                        },
+                                onTap: (){
+                             if(autovalidate==true){
+                                                    setState(() {
+                                                      autovalidate=false;
+                                                    });
+                                                  }
+                                                  else{
+                                                    setState(() {
+                                                autovalidate=true;   
                                                   });
-                                                }
-                                                else{
-                                                  setState(() {
-                                              obscureText=true;   
-                                                });
-                                                }
-                                              },
+                                                  }
+                           },
+                           obscureText:obscureText,
+                           value: password,
+                           suffixIconButton: IconButton(
+                                                icon: const Icon(Icons.visibility),
+                                                color:welcomepageBlue,
+                                                onPressed: () {
+                                                 if(obscureText==true){
+                                                    setState(() {
+                                                      obscureText=false;
+                                                    });
+                                                  }
+                                                  else{
+                                                    setState(() {
+                                                obscureText=true;   
+                                                  });
+                                                  }
+                                                },
+                                              ),
                                             ),
-                                          ),
-                        SizedBox(
-                                  height:20,
-                              ),
-                      MyGradientButton(
-                  placeHolder: 'Register Now',                  
-                  secondcolor:const Color(0xff0b6dff),
-                  firstcolor:const Color(0xff0bc9ff) ,
-                  pressed: (){
-                    MyNavigate.navigatejustpush(Register(), context);
-                  },
-                  ),
-                  SizedBox(height: 15,),
-                   NoAccount(
-            title: 'Already have an account?',
-            subtitle: 'LOGIN',
-            pressed: (){
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                                Login()), (Route<dynamic> route) => false);
-            },
-          )  
-              ],
+                          SizedBox(
+                                    height:20,
+                                ),
+                                Text(
+                                        error,
+                                        style: TextStyle(color: Colors.red),
+                                        ),  
+                                         SizedBox(
+                                    height:10,
+                                ),
+                        MyGradientButton(
+                    placeHolder: 'Register Now',                  
+                    secondcolor:const Color(0xff0b6dff),
+                    firstcolor:const Color(0xff0bc9ff) ,
+                    pressed: () async {
+
+                      if(_formKey.currentState!.validate()){
+
+                        try{
+                            dynamic result= await _auth.register(name.toString().trim(),email..toString().toLowerCase().trim(), 
+                                              'Update contact', password..toString().trim() );
+                            if(result==null){
+                              setState(() {
+                                 error='Error while registering, try again!';
+                              });
+                            }else if(result=='[firebase_auth/email-already-in-use] The email address is already in use by another account.'){
+                                  setState(() {
+                                 error='The email address is already in use by another account.';
+                                  });
+                              } 
+                              else{
+                                setState(() {
+                                 error='';
+                                  });
+                              print(result);
+                                ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: homepageBlue,
+                                            content: Text('Registered Successfully, Login')
+                                              )
+                                        );
+                                        MyNavigate.navigatejustpush(Login(), context);
+                            }
+                        }catch(e){
+                          setState(() {
+                            error=e.toString();
+                          });
+                            print(e.toString());
+                        }
+                        
+                                                  print('name is '+name);
+                      print('password is '+password);
+                    
+                      }
+                        print('email is '+email);
+                      
+                    },
+                    ),
+                    SizedBox(height: 15,),
+                     NoAccount(
+              title: 'Already have an account?',
+              subtitle: 'LOGIN',
+              pressed: (){
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                                  Login()), (Route<dynamic> route) => false);
+              },
+                      )  
+                ],
+              ),
             ),
           ),
           

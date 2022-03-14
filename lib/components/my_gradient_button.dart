@@ -21,6 +21,8 @@ class MyGradientButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
                                   onPressed:pressed,
+                                   disabledColor: Colors.orange,
+                                     disabledTextColor: Colors.white,
                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                                     padding: const EdgeInsets.all(0.0),
                                   child: Ink(

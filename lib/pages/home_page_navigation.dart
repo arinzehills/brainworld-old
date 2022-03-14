@@ -5,7 +5,7 @@ import 'package:brainworld/pages/library.dart';
 import 'package:brainworld/pages/uploads.dart';
 import 'package:flutter/material.dart';
 
-import 'chat.dart';
+import 'chats/chat.dart';
 
 
 class HomePageNavagation extends StatefulWidget {

@@ -34,8 +34,8 @@ class BasicTilePage extends StatelessWidget {
   }
 }
 class BasicTileWidget extends StatelessWidget {
-  final BasicTile? tile;
-  Icon? icon;
+   final BasicTile? tile;
+   Icon? icon;
    BasicTileWidget({ Key? key, this.tile,this.icon }) : super(key: key);
 
   @override

@@ -17,6 +17,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
       String? searchHint;
       double? curveContainerHeight;
       bool? showHorizontalScrollList;
+      bool? showSearchButton;
       Alignment alignment;
       CustomSliverDelegate({
         required this.expandedHeight,
@@ -28,6 +29,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
          required this.title, 
         this.searchHint,
         this.curveContainerHeight,
+        this.showSearchButton,
         required this.alignment, this.widget2,this.widget1
       });
 
@@ -63,11 +65,12 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                         searchHint: searchHint,
                         curvecontainerwidget1: widget1,
                         title_widget: title_widget,
-                        
+                        showSearchButton:showSearchButton ?? true,
                         ),
               ),
               
-                 if(showHorizontalScrollList==true) Align(
+                 if(showHorizontalScrollList==true)
+                  Align(
                             alignment: alignment,
                                child: Opacity(
                       opacity: percent,
@@ -125,7 +128,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
                child: Opacity(
                     opacity: percent,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 30 * percent, left: 30,right: 30, bottom: 0),
+                      padding: EdgeInsets.only(top: 33.9 * percent, left: 30,right: 30, bottom: 0),
                       child: Container(
                   height: 90,
                   width: size.width* 0.85,                  

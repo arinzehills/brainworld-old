@@ -31,7 +31,7 @@ class NormalCurveContainer extends StatelessWidget {
     return Container(
       height: height,
       padding: EdgeInsets.only(top: 0),
-    decoration: BoxDecoration(
+      decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(container_radius ?? 110)),
               gradient: LinearGradient(
                 begin: Alignment.topLeft,

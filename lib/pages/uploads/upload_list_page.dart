@@ -1,6 +1,7 @@
 import 'package:brainworld/components/custom_sliver_delegate.dart';
 import 'package:brainworld/components/drawer.dart';
 import 'package:brainworld/components/my_gradient_button.dart';
+import 'package:brainworld/components/mylist_container.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/constants/my_navigate.dart';
 import 'package:brainworld/pages/home_page_navigation.dart';
@@ -60,7 +61,7 @@ class _UploadListPageState extends State<UploadListPage> {
                                 child: 
                             GestureDetector(
                               onTap: (){
-                                MyNavigate.navigatejustpush(UploadDetail(), context);
+                                // MyNavigate.navigatejustpush(UploadDetail(), context);
                               },
                               child: Container(
                                               height: 90,
@@ -121,40 +122,5 @@ class _UploadListPageState extends State<UploadListPage> {
       
       );
 
-  }
-}
-class MyListContainer extends StatelessWidget {
-  final String title;
-  final String? sub_title;
-  const MyListContainer({
-    Key? key, required this.title, this.sub_title,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(19.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-                    title,
-                    style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                    ),
-          ),
-          SizedBox(height: 5,),
-          Text(
-                    sub_title ?? 'UploadListPage...',
-                    style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                    ),
-          )
-        ],
-      ),
-    );
   }
 }
