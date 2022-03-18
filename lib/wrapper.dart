@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:brainworld/authentications/login.dart';
 import 'package:brainworld/authentications/user/dashboard.dart';
 import 'package:brainworld/constants/constants.dart';
 import 'package:brainworld/constants/loading.dart';
@@ -179,7 +180,7 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
      final user= Provider.of<MyUser>(context);
     
-     if(user==null){
+     if(user!=null){
        return WelcomePage();
      } 
      else{
@@ -204,10 +205,10 @@ class _WrapperState extends State<Wrapper> {
                        final user=snapshotdata.data();
                       //  print(user['role']);
                        if(user['role']=='normal'){
-                         return HomePageNavagation();
+                         return Login();
                        }
                        else{
-                         return Lib();
+                         return WelcomePage();
                        }
                      }
                      else{

@@ -88,9 +88,9 @@ List<QuerySnapshot> combineLists(
         // Stream<QuerySnapshot> combineStream= chat1.mergeWith([chat2])
         // as Stream<QuerySnapshot>;
  
-     return StreamBuilder<AsyncSnapshot<List<dynamic>>(
+     return StreamBuilder(
           stream:combineStream,
-          builder: (context,AsyncSnapshot<List<dynamic>> snapshot){
+          builder: (context, snapshot){
             print(widget.clickeduserid);
             // final messages =snapshots.data;
             final List<QuerySnapshot> _list=[];
